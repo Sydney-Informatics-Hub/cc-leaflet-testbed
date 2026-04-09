@@ -6,7 +6,8 @@ import iconUrl from "leaflet/dist/images/marker-icon.png";
 import iconRetinaUrl from "leaflet/dist/images/marker-icon-2x.png";
 import shadowUrl from "leaflet/dist/images/marker-shadow.png";
 
-import "leaflet-sidebar-v2";
+import "leaflet-sidebar-v2/js/leaflet-sidebar.js";
+import "leaflet-sidebar-v2/css/leaflet-sidebar.css";
 
 
 
@@ -28,6 +29,26 @@ L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
 L.control.scale().addTo(map);
 
 
+// add sidebar
+
+const sidebar = L.control.sidebar({ container: 'sidebar'}).addTo(map);
+
+sidebar.addPanel({
+    id: 'home',
+    tab: '<i class="fa fa-home">',
+    title: 'home',
+    pane: "<p>Home</p>"
+});
+
+//sidebar.open("home");
 
 // show a marker on the map
 L.marker({ lon: 0, lat: 0 }).bindPopup("The center of the world").addTo(map);
+
+map.on('popupopen', (e) => {
+    sidebar.open("home");
+});
+
+map.on('popupclose', (e) => {
+    sidebar.close();
+});
